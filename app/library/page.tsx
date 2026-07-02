@@ -1,7 +1,12 @@
+import Navigation from "@/components/Navigation";
+
 export default function Page() {
   return (
-    <div>
-      Coming Soon
-    </div>
+    <>
+      <Navigation />
+      <main>
+        ...
+      </main>
+    </>
   );
 }

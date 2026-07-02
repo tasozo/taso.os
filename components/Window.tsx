@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Window({
   title,
@@ -22,23 +22,31 @@ export default function Window({
     };
   };
 
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!dragging.current) return;
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      if (!dragging.current) return;
 
-    setPos({
-      x: e.clientX - offset.current.x,
-      y: e.clientY - offset.current.y,
-    });
-  };
+      setPos({
+        x: e.clientX - offset.current.x,
+        y: e.clientY - offset.current.y,
+      });
+    };
 
-  const onMouseUp = () => {
-    dragging.current = false;
-  };
+    const handleUp = () => {
+      dragging.current = false;
+    };
+
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleUp);
+    };
+  }, []);
 
   return (
     <div
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
       style={{
         position: "absolute",
         left: pos.x,
